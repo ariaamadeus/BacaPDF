@@ -1,0 +1,9 @@
+tkinter
+PyPDF2
+pynput
+textract
+pyautogui
+datetime
+logging
+keyboard
+click
