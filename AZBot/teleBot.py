@@ -105,7 +105,9 @@ def GreetCH(message):
     
 @bot.message_handler(func=feedbackCatch)
 def GreetCH(message):
-    bot.send_message(895523970, str(message.chat.first_name)+":"+message.text)
+    with open('feedback.txt','a') as f:
+        f.write(message.text)
+    #bot.send_message(895523970, str(message.chat.first_name)+":"+message.text)
     bot.send_message(message.chat.id, "Pesan terkirim :)")
 
 @bot.message_handler(func=ClassCode)
