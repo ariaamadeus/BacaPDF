@@ -4,10 +4,11 @@ from datetime import datetime, timedelta
 from theInit import *
 import csvHandler as csvH
 
-
 nextJadwal, indexHari, indexWaktu, classCodes = (0,0,0,0)
 once, changeJadwal = (True, False)
-iniTime(tahun, bulan, hari)
+
+def begin(tahun, bulan, hari):
+    iniTime(tahun, bulan, hari)
 
 def checkNext(tahun, bulan, hari):
     global nextJadwal, indexHari, indexWaktu, classCodes
