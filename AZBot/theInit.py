@@ -35,7 +35,7 @@ def iniTime(year,month,day):
             continue
         
         if jamOn:
-            if word in ['s/d','Tanggal','tgl']:
+            if word in ['s/d','Tanggal','tgl','Tgl']:
                 jamOn = False
                 continue
             
@@ -53,7 +53,11 @@ def iniTime(year,month,day):
         Index = jadwal.index(HARI)
         for WAKTU in HARI:
             if WAKTU:
-                jam, menit, detik = WAKTU.split(':')
+                try:
+                    jam, menit, detik = WAKTU.split(':')
+                except:
+                    jammenit, detik = WAKTU.split(':')
+                    jam, menit = jammenit.split('.')
                 tahun, bulan, hari = dateRange[Index].strftime('%Y:%m:%d').split(':')
                 jadwalDt[Index].append(datetime(int(tahun),int(bulan),int(hari),int(jam),int(menit),int(detik)))
             
@@ -64,7 +68,10 @@ def nexTime(jadwal, interval=0):
         for WAKTU in HARI:
             if WAKTU > datetime.now() + timedelta(minutes=interval) + timedelta(hours=7):
                 return WAKTU, jadwal.index(HARI), HARI.index(WAKTU)
-            
+    return jadwal[0][0],0,0
+ 
+__all__ = ['jadwalDt','jadwalCCode','iniTime','nexTime']
+ 
 if __name__ == "__main__":
     #print(int(pd.date_range(start=datetime.now(), periods = 6).to_pydatetime().tolist()[0].strftime('%Y:%m:%d').split(':')[2]))
     iniTime(2022,1,3)

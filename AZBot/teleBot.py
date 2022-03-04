@@ -82,13 +82,15 @@ def schedulesCom(message,classCode=0):
     if len(queryClass) > 0:
         for kelas in queryClass:
             sendTo = "Matkul: "+kelas[0]+"\n"
-            sendTo += "Waktu: "+kelas[1]+", "+kelas[2]+"\n"
-            sendTo += "Dosen: "+kelas[3]+"\n"
-            try:
-                sendTo += "MeetID: "+kelas[4]+"\n"
-                sendTo += "Pass: "+kelas[5]
-            except:
-                sendTo += "MeetID: Google Meet"
+            sendTo += "Waktu: "+kelas[1]+", "+kelas[2]+kelas[3]+"\n"
+            sendTo += "Dosen: "+kelas[4]+"\n"
+            if kelas[5].isidigit() and kelas[6].isdigit():
+                sendTo += "MeetID: "+kelas[5]+"\n"
+                sendTo += "Pass: "+kelas[6]
+            elif kelas[5] == "G":
+                sendTo += "Room:" + kelas[5] + ' ' + kelas[6]
+            else:#PTM
+                sendTo += "Room:" + kelas[5]
             bot.send_message(message.chat.id, sendTo) 
         bot.send_message(message.chat.id, "Selamat Kuliah!")
     else:

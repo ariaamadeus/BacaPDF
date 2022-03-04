@@ -52,6 +52,8 @@ def openFile(search):
     tologlist = []
     count1 = 0
     keywords = []
+    
+    #Step1 Open file & turn text into list
     with open('keywords.txt','r') as textKey:
         word = ''
         for x in textKey.read():
@@ -61,28 +63,34 @@ def openFile(search):
             else:
                 word += x
     
+    #Step2, 
     for x in keywords:
+        #ada berapa banyak kode kelas di pdf
         if x.casefold() == search.casefold():
             keypoint.append(count1)
         count1 += 1
-    count2 = 1#nomor
+    count2 = 1 #nomor
     count3 = 1
     count4 = 0
     countsks = 0
     digit = 0
     iden = 0
     text2 = []
+    #check kode kelas atau bukan
     for x in search:
         if x.isdigit():
             digit+=1
         else:
             iden+=1
+            
+    #Kalau kode kelas :
     if (0<digit<3) and (iden == 4):
 #         print("found: "+str(len(keypoint))+" of "+search.upper())
         for x in keypoint:
             once1 = True
             tolog = ''
             while True:
+#ke kiri
                 digit = 0
                 iden = 0
                 ocount = 0
@@ -94,6 +102,8 @@ def openFile(search):
                     if y.casefold() == 'o':
                         ocount+=1
                     count4 +=1
+                
+                #skipper
                 if once1:
                     if len(keywords[x-count3])>0:
                         if keywords[x-count3].isdigit():
@@ -108,16 +118,21 @@ def openFile(search):
                     count3+=1
                     once1 = False
                     continue
+                #skip None
                 elif (digit == 0) and (iden == 0):
                     count3+=1
                     continue
+                #skip Course ID
                 elif (digit == iden) or (iden == digit-1):
                     count3+=1
                     continue
+                #skip Course ID juga, tapi 0 nya O
                 elif (digit+iden == 8) and (iden-ocount == 4):
                     count3+=1
                     continue
-                elif (digit == 2) or (keywords[x-count3].casefold() == "passcode") or (keywords[x-count3].casefold() == "meet") or (keywords[x-count3].casefold() == "r") or (keywords[x-count3].casefold() == "k"):
+                
+                #stopper matakuliah
+                elif (digit == 2) or (keywords[x-count3].casefold() == "passcode") or (keywords[x-count3].casefold() == "meet") or (keywords[x-count3].casefold() == "r") or (keywords[x-count3].casefold() == "k") or (keywords[x-count3].casefold() == "ptm"):
                     count5 = 1
                     for i in stopper:
                         if i == keywords[x-count3+1].casefold():
@@ -148,8 +163,15 @@ def openFile(search):
                     iden = 0
                     once = True
                     nama = ""
+                    
+#ke kanan
                     while True:
+                        #lompatin online
                         if keywords[x+count3].casefold() == "online":
+                            count3+=1
+                            continue
+                        #lompatin lab
+                        elif keywords[x+count3].casefold() == "lab" or keywords[x+count3].casefold() == "t.sipil" or keywords[x+count3].casefold() == "sipil" or keywords[x+count3].casefold() == "t.elektro":
                             count3+=1
                             continue
                         else:
@@ -193,6 +215,7 @@ def openFile(search):
                                 #Gajadi lompatin KDS
                                 count3+=1
                                 continue
+                            
                             elif (digit == 0) and (iden > 0):
                                 if keywords[x+count3] == '-':
                                     tolog+='-'
@@ -213,22 +236,26 @@ def openFile(search):
                                         if b == keywords[x+count3].casefold():
                                             nomeet = True
                                     if nomeet:
+                                        #Fetch nama dosen disini
                                         break
                                     nama+=keywords[x+count3].capitalize()
                                     nama+=" "
-                            elif (digit>0) and (iden == 0):
+                                    
+                            elif ((digit>0) and (iden == 0)) or keywords[x+count3].casefold() == 'g' or keywords[x+count3].casefold() == 'meet' or keywords[x+count3] == 'ptm':
+                                #pass
                                 if len(keywords[x+count3])== 2:
                                     tolog+='|'
                                     tolog+=keywords[x+count3]
                                     break
                                 else:
                                     if once:
-                                        #Fetch nama dosen disini
                                         tolog+=nama
                                         tolog+='|'
                                         nama = ""
                                         once = False
-                                tolog+=keywords[x+count3] 
+                                #meetID / PTM
+                                tolog+=keywords[x+count3]
+                            #meetId bakal terus ditambahin sampe kena breaknya pass
                             count3+=1
                     count3 = 1
                     digit = 0
