@@ -12,6 +12,7 @@ def first():
 
 def second():
     tahun, bulan, hari = (2022,1,10)
+    timeHandle.begin(tahun, bulan, hari)
     checkNext(tahun, bulan, hari) #initialize
     while True:
         checkForSend(tahun, bulan, hari)
