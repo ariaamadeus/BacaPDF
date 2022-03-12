@@ -3,13 +3,17 @@ import os
 import textract as txr
 import PyPDF2 as pdr
 
+#14-19 Maret 22
+
 dengansks = True
 jumhal_save = 0
 count = 0
 count1 = 0
 
+prodi = ["akuntansi","informatika","manajemen","psikologi","sastra","sistem","teknik","informasi","inggris","sipil","elektro","industri"]
+
 keywords = []
-stopper = ["akuntansi","informatika","manajemen","psikologi","sastra","sistem","teknik","google"]
+stopper = ["akuntansi","informatika","manajemen","psikologi","sastra","sistem","teknik","google","ptm"]
 tologlist = []
 
 def openNew(num_pages):
@@ -131,19 +135,21 @@ def openFile(search):
                     count3+=1
                     continue
                 
-                #stopper matakuliah
-                elif (digit == 2) or (keywords[x-count3].casefold() == "passcode") or (keywords[x-count3].casefold() == "meet") or (keywords[x-count3].casefold() == "r") or (keywords[x-count3].casefold() == "k") or (keywords[x-count3].casefold() == "ptm"):
+                #stopper matakuliah #14-19 if False
+                elif (digit == 2) or (keywords[x-count3].casefold() == "passcode") or (keywords[x-count3].casefold() == "meet") or (keywords[x-count3].casefold() == "r") or (keywords[x-count3].casefold() == "k"):
                     count5 = 1
-                    for i in stopper:
-                        if i == keywords[x-count3+1].casefold():
-                            break
+                    #Prodi kiri
+                    if False:
+                        for i in stopper:
+                            if i == keywords[x-count3+1].casefold():
+                                break
+                            else:
+                                count5+=1
+                        if count5<5:
+                            text2.pop(0)
                         else:
-                            count5+=1
-                    if count5<5:
-                        text2.pop(0)
-                    else:
-                        text2.pop(0)
-                        text2.pop(0)
+                            text2.pop(0)
+                            text2.pop(0)
                     count4 = 0
                     #MATKUL
                     for i in text2:
@@ -163,7 +169,6 @@ def openFile(search):
                     iden = 0
                     once = True
                     nama = ""
-                    
 #ke kanan
                     while True:
                         #lompatin online
@@ -221,6 +226,11 @@ def openFile(search):
                                     tolog+='-'
                                     count3+=1
                                     continue
+                                #Skip Prodi kanan
+                                if keywords[x+count3].casefold() in prodi and True:
+                                    count3+=1
+                                    continue
+                                
                                 #Kuliah(K)/Responsi(R)
                                 elif keywords[x+count3] == 'K' or keywords[x+count3] == 'R': 
                                     count3+=1
@@ -230,8 +240,14 @@ def openFile(search):
                                     #HARI
                                     tolog+=keywords[x+count3].capitalize()
                                     tolog+='|'
+                                
                                 elif len(keywords[x+count3]) >= 2:
                                     nomeet = False
+                                    if keywords[x+count3] == 'PTM' or keywords[x+count3].casefold() == 'meet':
+                                        nama+='|'
+                                        nama+=keywords[x+count3]
+                                        tolog+=nama
+                                        break
                                     for b in stopper:
                                         if b == keywords[x+count3].casefold():
                                             nomeet = True
@@ -240,8 +256,7 @@ def openFile(search):
                                         break
                                     nama+=keywords[x+count3].capitalize()
                                     nama+=" "
-                                    
-                            elif ((digit>0) and (iden == 0)) or keywords[x+count3].casefold() == 'g' or keywords[x+count3].casefold() == 'meet' or keywords[x+count3] == 'ptm':
+                            elif ((digit>0) and (iden == 0)):
                                 #pass
                                 if len(keywords[x+count3])== 2:
                                     tolog+='|'
@@ -254,6 +269,7 @@ def openFile(search):
                                         nama = ""
                                         once = False
                                 #meetID / PTM
+                                
                                 tolog+=keywords[x+count3]
                             #meetId bakal terus ditambahin sampe kena breaknya pass
                             count3+=1
@@ -282,5 +298,5 @@ def openFile(search):
     return tologlist
 
 if __name__ == "__main__":
-    openNew(18)
-    print(openFile('5peea'))
+    openNew(13)
+    print(openFile('6peea'))

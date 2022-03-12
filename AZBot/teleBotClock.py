@@ -15,13 +15,14 @@ def schedulesClock(ID, classCode, Hari, Waktu):
                 sendTo = "Matkul: "+kelas[0]+"\n"
                 sendTo += "Waktu: "+kelas[1]+", "+kelas[2]+kelas[3]+"\n"
                 sendTo += "Dosen: "+kelas[4]+"\n"
-                if kelas[5].isidigit() and kelas[6].isdigit():
+                if kelas[5] == "PTM":
+                    sendTo += "Room:" + kelas[5]
+                elif kelas[5] == "Meet":
+                    sendTo += "Room:" +'G'+ kelas[5]
+                else:#angka
                     sendTo += "MeetID: "+kelas[5]+"\n"
                     sendTo += "Pass: "+kelas[6]
-                elif kelas[5] == "G":
-                    sendTo += "Room:" + kelas[5] + ' ' + kelas[6]
-                else:#PTM
-                    sendTo += "Room:" + kelas[5]
+                    
                     
                 bot.send_message(int(ID), sendTo) 
         bot.send_message(int(ID), "Semangat Kuliah!")

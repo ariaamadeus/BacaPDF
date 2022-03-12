@@ -13,9 +13,9 @@ with open('API_KEY.txt') as API_KEY:
 #ClassCode, TimeInterval, Status, Feedback
 messageBool = [False, False, False, False] 
 
-def Echooo():
+def Echooo(themessage):
     for ID in csvH.AllID():
-        bot.send_message(ID, "Beta v0.1 here!\nWhats New: Automatic schedule reminder")
+        bot.send_message(ID, themessage)
 
 def Greet(message):
     print(message.text)
@@ -84,13 +84,13 @@ def schedulesCom(message,classCode=0):
             sendTo = "Matkul: "+kelas[0]+"\n"
             sendTo += "Waktu: "+kelas[1]+", "+kelas[2]+kelas[3]+"\n"
             sendTo += "Dosen: "+kelas[4]+"\n"
-            if kelas[5].isidigit() and kelas[6].isdigit():
+            if kelas[5] == "PTM":
+                sendTo += "Room:" + kelas[5]
+            elif kelas[5] == "Meet":
+                sendTo += "Room:" +'G'+ kelas[5]
+            else:#angka
                 sendTo += "MeetID: "+kelas[5]+"\n"
                 sendTo += "Pass: "+kelas[6]
-            elif kelas[5] == "G":
-                sendTo += "Room:" + kelas[5] + ' ' + kelas[6]
-            else:#PTM
-                sendTo += "Room:" + kelas[5]
             bot.send_message(message.chat.id, sendTo) 
         bot.send_message(message.chat.id, "Selamat Kuliah!")
     else:
@@ -123,6 +123,6 @@ def ClassCH(message):
         bot.send_message(message.chat.id, "Ketik /classcode untuk mengganti kode kelas, atau /schedules untuk melihat jadwal kelasmu")
 
 if __name__ == "__main__":
-    Echooo()
+    Echooo("Hi! Server On 7-12 Maret 2022")
 #     bot.infinity_polling()
 #     time.sleep(2)
